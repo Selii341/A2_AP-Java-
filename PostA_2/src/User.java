@@ -1,4 +1,8 @@
-
+/* presents users and contains attributes related to user information
+ * This class represents the Model in the MVC pattern. (attributes and methods are defined)
+ * It encapsulates user information such as username, password, first name, and last name.
+ * The User class is responsible for modeling user data
+ * */
 public class User {
     private String username;
 

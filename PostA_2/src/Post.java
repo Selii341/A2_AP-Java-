@@ -1,4 +1,7 @@
-
+/* Model(MCV)
+ * encapsulates the essential information and functionality related to a social media post, 
+ * making it a convenient way to manage and display post data within your application.
+*/
 
 import java.util.Date;
 

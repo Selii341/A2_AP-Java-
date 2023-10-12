@@ -1,4 +1,8 @@
-
+/* It represents the View in the MVC pattern (displays the data to the user (GUI)and sends user input to the Controller for processing ) 
+ * The application allows users to log in or register new accounts 
+ * and handles switching between different scenes (login, registration, and the main content view)
+ * User information eg.sss is stored in a file using the accountNumber class.
+ */
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -41,10 +45,11 @@ public class HelloApplication extends Application {
 
     String currentAccount = "";
     User currentUser;
+    
     @Override
     public void start(Stage stage) throws IOException {
 
-
+    	//login window
         SignScene = Sign();
 
         SignStage.setTitle("Post Information");
@@ -103,7 +108,8 @@ public class HelloApplication extends Application {
                 ex.printStackTrace();
             }
         });
-
+        
+        // option for users to register a new account
         SignRegisterButton.setOnAction(e -> {
             RegisterScene = Register();
             SignStage.setScene(RegisterScene);
@@ -124,6 +130,7 @@ public class HelloApplication extends Application {
         Label RegisterLastNameLabel = new Label("LastName:");
         RegisterLastNameLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
 
+      //checks if the user already exists and displays appropriate messages
         Label RegisterRepeatLabel = new Label("      Username existed!    ");
         RegisterRepeatLabel.setTextFill(Color.RED);
         RegisterRepeatLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
@@ -168,7 +175,8 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(vbox, 600, 400);
 
         RegisterReButton.setOnAction(e -> SignStage.setScene(SignScene));
-
+       
+        
         RegisterOkButton.setOnAction(e -> {
             if (RegisterAccountTextField.getText().isEmpty() || RegisterPasswordTextField.getText().isEmpty() || RegisterFirstNameTextField.getText().isEmpty() ||
                     RegisterLastNameTextField.getText().isEmpty()) {
@@ -185,6 +193,7 @@ public class HelloApplication extends Application {
                     RegisterSuccessLabel.setVisible(true);
                     RegisterRepeatLabel.setVisible(false);
                 } else
+                	//already exist
                     RegisterRepeatLabel.setVisible(true);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -192,7 +201,8 @@ public class HelloApplication extends Application {
         });
         return scene;
     }
-
+    
+// Homepage--main content view after a successful login
     Scene Center() {
         //Create a table to display
         tableView = CreateTable();
@@ -250,7 +260,7 @@ public class HelloApplication extends Application {
         return scene;
     }
 
-
+//sheet
     public TabPane InitialTab() {
         TabPane tabPane = new TabPane();
 
@@ -265,7 +275,7 @@ public class HelloApplication extends Application {
 
         return tabPane;
     }
-
+//a1
     public static HashMap<Integer, Post> LoadFiles() {
         HashMap<Integer, Post> result = new HashMap<Integer, Post>();
         try {
@@ -309,7 +319,7 @@ public class HelloApplication extends Application {
         }
         return result;
     }
-
+//
     public TableView CreateTable() {
         PostsCollection.initPosts(LoadFiles());
         TableView tableView = new TableView();
@@ -369,8 +379,8 @@ public class HelloApplication extends Application {
     }
 
 
-
-    //Add a new student to selected class
+//message box
+    //Add a new to selected class
     public void AddPost() {
         Stage msgBox = new Stage();
         Group msgGroup = new Group();
@@ -449,7 +459,7 @@ public class HelloApplication extends Application {
         msgBox.setScene(scene1);
         msgBox.show();
     }
-
+//helper function
     private void initAddField(TextField field, int layoutX, int layoutY) {
         field.setPrefSize(150, 20);
         field.setAlignment(Pos.CENTER_LEFT);
@@ -487,7 +497,7 @@ public class HelloApplication extends Application {
             }
         }
     }
-
+//
     void EditProfile() {
         Label RegisterTitle = new Label("   Register");
         RegisterTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));

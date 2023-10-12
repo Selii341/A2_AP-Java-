@@ -1,4 +1,8 @@
-
+/*
+ * This manages a collection of posts by storing them in a HashMap and 
+ * includes methods to interact with this collection
+ * which is a part of Model 
+ * */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
