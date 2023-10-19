@@ -9,27 +9,27 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class RegisterController {
-    private TextField RegisterAccountTextField;
-    private TextField RegisterPasswordTextField;
-    private TextField RegisterFirstNameTextField;
-    private TextField RegisterLastNameTextField;
-    private Label RegisterSuccessLabel;
-    private Label RegisterRepeatLabel;
+    private TextField registerAccountTextField;
+    private TextField registerPasswordTextField;
+    private TextField registerFirstNameTextField;
+    private TextField registerLastNameTextField;
+    private Label registerSuccessLabel;
+    private Label registerRepeatLabel;
 
-    public static Scene RegisterScene;
+    public static Scene registerScene;
 
     public RegisterController(TextField registerAccountTextField, TextField registerPasswordTextField, TextField registerFirstNameTextField, TextField registerLastNameTextField, Label registerSuccessLabel, Label registerRepeatLabel) {
-        RegisterAccountTextField = registerAccountTextField;
-        RegisterPasswordTextField = registerPasswordTextField;
-        RegisterFirstNameTextField = registerFirstNameTextField;
-        RegisterLastNameTextField = registerLastNameTextField;
-        RegisterSuccessLabel = registerSuccessLabel;
-        RegisterRepeatLabel = registerRepeatLabel;
+        this.registerAccountTextField = registerAccountTextField;
+        this.registerPasswordTextField = registerPasswordTextField;
+        this.registerFirstNameTextField = registerFirstNameTextField;
+        this.registerLastNameTextField = registerLastNameTextField;
+        this.registerSuccessLabel = registerSuccessLabel;
+        this.registerRepeatLabel = registerRepeatLabel;
     }
 
     public void okButtonHandler(ActionEvent event) {
-        if (RegisterAccountTextField.getText().isEmpty() || RegisterPasswordTextField.getText().isEmpty() || RegisterFirstNameTextField.getText().isEmpty() ||
-                RegisterLastNameTextField.getText().isEmpty()) {
+        if (registerAccountTextField.getText().isEmpty() || registerPasswordTextField.getText().isEmpty() || registerFirstNameTextField.getText().isEmpty() ||
+                registerLastNameTextField.getText().isEmpty()) {
             Alert a = new Alert(Alert.AlertType.WARNING, "Information should not be empty");
             a.setTitle("Warning");
             a.setHeaderText("Field Empty");
@@ -37,16 +37,16 @@ public class RegisterController {
             return;
         }
         try {
-            if (accountNumber.testing(RegisterAccountTextField.getText()) == 1) {
-                accountNumber.register(RegisterAccountTextField.getText(), RegisterPasswordTextField.getText(),
-                        RegisterFirstNameTextField.getText(), RegisterLastNameTextField.getText());
-                HelloApplication.SignStage.setScene(SignController.SignScene);
+            if (AccountNumber.testing(registerAccountTextField.getText()) == 1) {
+                AccountNumber.register(registerAccountTextField.getText(), registerPasswordTextField.getText(),
+                        registerFirstNameTextField.getText(), registerLastNameTextField.getText());
+                HelloApplication.SignStage.setScene(SignController.signScene);
                 Alert a = new Alert(Alert.AlertType.INFORMATION, "Register succeeded");
                 a.setTitle("Information");
                 a.setHeaderText("Register succeeded");
                 a.show();
             } else {
-                RegisterRepeatLabel.setVisible(true);
+                registerRepeatLabel.setVisible(true);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -54,6 +54,6 @@ public class RegisterController {
     }
 
     public void backButtonHandler(ActionEvent event) {
-        HelloApplication.SignStage.setScene(SignController.SignScene);
+        HelloApplication.SignStage.setScene(SignController.signScene);
     }
 }

@@ -9,29 +9,29 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class SignController {
-    private TextField SignAccountTextField;
-    private TextField SignPasswordTextField;
+    private TextField signAccountTextField;
+    private TextField signPasswordTextField;
 
-    private Label SignForgetLabel;
+    private Label signForgetLabel;
 
-    public static Scene SignScene;
+    public static Scene signScene;
 
     public SignController(TextField signAccountTextField, TextField signPasswordTextField, Label signForgetLabel) {
-        SignAccountTextField = signAccountTextField;
-        SignPasswordTextField = signPasswordTextField;
-        SignForgetLabel = signForgetLabel;
+        this.signAccountTextField = signAccountTextField;
+        this.signPasswordTextField = signPasswordTextField;
+        this.signForgetLabel = signForgetLabel;
     }
 
     public void okButtonHandler(ActionEvent event) {
         try {
-            if (accountNumber.testing(SignAccountTextField.getText(), SignPasswordTextField.getText()) == 1) {
+            if (AccountNumber.testing(signAccountTextField.getText(), signPasswordTextField.getText()) == 1) {
             	//crab the static currentUser from HelloApplication
-                HelloApplication.currentUser = accountNumber.getUser(SignAccountTextField.getText());
-                CenterController.CenterScene = HelloApplication.Center();
+                HelloApplication.currentUser = AccountNumber.getUser(signAccountTextField.getText());
+                CenterController.CenterScene = HelloApplication.center();
                 HelloApplication.SignStage.setScene(CenterController.CenterScene);
                 HelloApplication.SignStage.setTitle("Welcome " + HelloApplication.currentUser.getFirstName() + " " + HelloApplication.currentUser.getLastName());
             } else {
-                SignForgetLabel.setVisible(true);
+                signForgetLabel.setVisible(true);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -39,7 +39,7 @@ public class SignController {
     }
 
     public void registerHandler(ActionEvent event) {
-        RegisterController.RegisterScene = HelloApplication.Register();
-        HelloApplication.SignStage.setScene(RegisterController.RegisterScene);
+        RegisterController.registerScene = HelloApplication.register();
+        HelloApplication.SignStage.setScene(RegisterController.registerScene);
     }
 }

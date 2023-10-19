@@ -1,3 +1,8 @@
+/* It represents the View in the MVC pattern (displays the data to the user (GUI)and sends user input to the Controller for processing ) 
+ * The application allows users to log in or register new accounts 
+ * and handles switching between different scenes (login, registration, and the main content view)
+ * User information eg.sss is stored in a file using the accountNumber class.
+ */
 
 
 import javafx.application.Application;
@@ -36,125 +41,125 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         SignStage = new Stage();
-        SignController.SignScene = Sign();
+        SignController.signScene = sign();
 
         SignStage.setTitle("Post Information");
-        SignStage.setScene(SignController.SignScene);
+        SignStage.setScene(SignController.signScene);
         SignStage.show();
     }
 
     //Create a login panel
-    Scene Sign() {
-        Label SignTitle = new Label("    Login");
-        SignTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
-        Label SignAccountLabel = new Label("Username:");
-        SignAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
-        Label SignPasswordLabel = new Label("Password:");
-        SignPasswordLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
-        Label SignForgetLabel = new Label("Wrong username or password!");
-        SignForgetLabel.setTextFill(Color.RED);
-        SignForgetLabel.setFont(Font.font("T", FontPosture.ITALIC, 20));
-        SignForgetLabel.setVisible(false);
+    Scene sign() {
+        Label signTitle = new Label("    Login");
+        signTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
+        Label signAccountLabel = new Label("Username:");
+        signAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+        Label signPasswordLabel = new Label("Password:");
+        signPasswordLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+        Label signForgetLabel = new Label("Wrong username or password!");
+        signForgetLabel.setTextFill(Color.RED);
+        signForgetLabel.setFont(Font.font("T", FontPosture.ITALIC, 20));
+        signForgetLabel.setVisible(false);
 
-        TextField SignAccountTextField = new TextField();
-        TextField SignPasswordTextField = new TextField();
+        TextField signAccountTextField = new TextField();
+        TextField signPasswordTextField = new TextField();
 
-        Button SignOkButton = new Button("OK");
-        Button SignRegisterButton = new Button("Sign up");
+        Button signOkButton = new Button("OK");
+        Button signRegisterButton = new Button("Sign up");
 
-        GridPane SignPane = new GridPane();
-        SignPane.setHgap(20);
-        SignPane.setVgap(20);
+        GridPane signPane = new GridPane();
+        signPane.setHgap(20);
+        signPane.setVgap(20);
 
-        SignPane.setPadding(new Insets(0, 10, 10, 10));
+        signPane.setPadding(new Insets(0, 10, 10, 10));
 
-        SignPane.add(SignTitle, 4, 2);
-        SignPane.add(SignAccountLabel, 3, 3);
-        SignPane.add(SignAccountTextField, 4, 3);
-        SignPane.add(SignPasswordLabel, 3, 4);
-        SignPane.add(SignPasswordTextField, 4, 4);
-        SignPane.add(SignForgetLabel, 4, 7);
-        HBox hbox = new HBox(SignOkButton, SignRegisterButton);
+        signPane.add(signTitle, 4, 2);
+        signPane.add(signAccountLabel, 3, 3);
+        signPane.add(signAccountTextField, 4, 3);
+        signPane.add(signPasswordLabel, 3, 4);
+        signPane.add(signPasswordTextField, 4, 4);
+        signPane.add(signForgetLabel, 4, 7);
+        HBox hbox = new HBox(signOkButton, signRegisterButton);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(20);
 
-        VBox vbox = new VBox(SignPane, hbox);
+        VBox vbox = new VBox(signPane, hbox);
         Scene scene = new Scene(vbox, 600, 400);
 
-        SignController controller = new SignController(SignAccountTextField, SignPasswordTextField, SignForgetLabel);
-        SignOkButton.setOnAction(controller::okButtonHandler);
+        SignController controller = new SignController(signAccountTextField, signPasswordTextField, signForgetLabel);
+        signOkButton.setOnAction(controller::okButtonHandler);
 
-        SignRegisterButton.setOnAction(controller::registerHandler);
+        signRegisterButton.setOnAction(controller::registerHandler);
         return scene;
     }
 
     //Create a register panel
-    public static Scene Register() {
-        Label RegisterTitle = new Label("   Register");
-        RegisterTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
-        Label RegisterAccountLabel = new Label("Username:");
-        RegisterAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
-        Label RegisterPasswordLabel = new Label("Password:");
-        RegisterPasswordLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
-        Label RegisterFirstNameLabel = new Label("FirstName:");
-        RegisterFirstNameLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
-        Label RegisterLastNameLabel = new Label("LastName:");
-        RegisterLastNameLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+    public static Scene register() {
+        Label registerTitle = new Label("   Register");
+        registerTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
+        Label registerAccountLabel = new Label("Username:");
+        registerAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+        Label registerPasswordLabel = new Label("Password:");
+        registerPasswordLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+        Label registerFirstNameLabel = new Label("FirstName:");
+        registerFirstNameLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+        Label registerLastNameLabel = new Label("LastName:");
+        registerLastNameLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
 
-        Label RegisterRepeatLabel = new Label("      Username existed!    ");
-        RegisterRepeatLabel.setTextFill(Color.RED);
-        RegisterRepeatLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
-        RegisterRepeatLabel.setVisible(false);
+        Label registerRepeatLabel = new Label("      Username existed!    ");
+        registerRepeatLabel.setTextFill(Color.RED);
+        registerRepeatLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+        registerRepeatLabel.setVisible(false);
 
-        Label RegisterSuccessLabel = new Label("Succeed!");
-        RegisterSuccessLabel.setTextFill(Color.RED);
-        RegisterSuccessLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
-        RegisterSuccessLabel.setVisible(false);
+        Label registerSuccessLabel = new Label("Succeed!");
+        registerAccountLabel.setTextFill(Color.RED);
+        registerAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
+        registerAccountLabel.setVisible(false);
 
-        Button RegisterOkButton = new Button("OK");
-        Button RegisterReButton = new Button("Back");
+        Button registerOkButton = new Button("OK");
+        Button registerReButton = new Button("Back");
 
-        TextField RegisterAccountTextField = new TextField();
-        TextField RegisterPasswordTextField = new TextField();
-        TextField RegisterFirstNameTextField = new TextField();
-        TextField RegisterLastNameTextField = new TextField();
+        TextField registerAccountTextField = new TextField();
+        TextField registerPasswordTextField = new TextField();
+        TextField registerFirstNameTextField = new TextField();
+        TextField registerLastNameTextField = new TextField();
 
-        GridPane RegisterPane = new GridPane();
-        RegisterPane.setHgap(20);
-        RegisterPane.setVgap(20);
+        GridPane registerPane = new GridPane();
+        registerPane.setHgap(20);
+        registerPane.setVgap(20);
 
-        RegisterPane.setPadding(new Insets(0, 10, 10, 10));
+        registerPane.setPadding(new Insets(0, 10, 10, 10));
 
-        RegisterPane.add(RegisterTitle, 4, 2);
-        RegisterPane.add(RegisterAccountLabel, 3, 3);
-        RegisterPane.add(RegisterAccountTextField, 4, 3);
-        RegisterPane.add(RegisterPasswordLabel, 3, 4);
-        RegisterPane.add(RegisterPasswordTextField, 4, 4);
-        RegisterPane.add(RegisterRepeatLabel, 4, 7);
-        RegisterPane.add(RegisterSuccessLabel, 4, 7);
+        registerPane.add(registerTitle, 4, 2);
+        registerPane.add(registerAccountLabel, 3, 3);
+        registerPane.add(registerAccountTextField, 4, 3);
+        registerPane.add(registerPasswordLabel, 3, 4);
+        registerPane.add(registerPasswordTextField, 4, 4);
+        registerPane.add(registerRepeatLabel, 4, 7);
+        registerPane.add(registerSuccessLabel, 4, 7);
 
-        RegisterPane.add(RegisterFirstNameLabel, 3, 5);
-        RegisterPane.add(RegisterLastNameLabel, 3, 6);
-        RegisterPane.add(RegisterFirstNameTextField, 4, 5);
-        RegisterPane.add(RegisterLastNameTextField, 4, 6);
+        registerPane.add(registerFirstNameLabel, 3, 5);
+        registerPane.add(registerLastNameLabel, 3, 6);
+        registerPane.add(registerFirstNameTextField, 4, 5);
+        registerPane.add(registerLastNameTextField, 4, 6);
 
-        HBox hbox = new HBox(RegisterOkButton, RegisterReButton);
+        HBox hbox = new HBox(registerOkButton, registerReButton);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(20);
 
-        VBox vbox = new VBox(RegisterPane, hbox);
+        VBox vbox = new VBox(registerPane, hbox);
         Scene scene = new Scene(vbox, 600, 400);
 
-        RegisterController controller = new RegisterController(RegisterAccountTextField, RegisterPasswordTextField, RegisterFirstNameTextField, RegisterLastNameTextField, RegisterSuccessLabel, RegisterRepeatLabel);
-        RegisterReButton.setOnAction(controller::backButtonHandler);
-        RegisterOkButton.setOnAction(controller::okButtonHandler);
+        RegisterController controller = new RegisterController(registerAccountTextField, registerPasswordTextField, registerFirstNameTextField, registerLastNameTextField, registerSuccessLabel, registerRepeatLabel);
+        registerReButton.setOnAction(controller::backButtonHandler);
+        registerOkButton.setOnAction(controller::okButtonHandler);
         return scene;
     }
 
-    public static Scene Center() {
+    public static Scene center() {
         //Create a table to display
-        tableView = CenterController.CreateTable();
-        TabPane tabPane = InitialTab();
+        tableView = CenterController.createTable();
+        TabPane tabPane = initialTab();
 
         //text for typing the search string
         TextField field = new TextField();
@@ -200,8 +205,8 @@ public class HelloApplication extends Application {
         searchButton.setOnAction(controller::searchButtonHandler);
 
         //Click edit button to edit profile
-        Button EditButton = new Button("Edit profile");
-        EditButton.setOnAction(controller::editButtonHandler);
+        Button editButton = new Button("Edit profile");
+        editButton.setOnAction(controller::editButtonHandler);
 
         //Click Remove Button to remove a post
         Button removeButton = new Button("Delete Post");
@@ -226,7 +231,7 @@ public class HelloApplication extends Application {
         pieChart = updateVIPComponent();
 
         //VBox for all components
-        HBox searchBox = new HBox(field, searchButton, addButton, EditButton, upgradeButton, logoutButton);
+        HBox searchBox = new HBox(field, searchButton, addButton, editButton, upgradeButton, logoutButton);
         HBox deleteBox = new HBox(deleteField, removeButton);
         HBox likesBox = new HBox(numField, likesButton);
         HBox exportBox = new HBox(exportIDField, exportFileField, exportButton);
@@ -274,7 +279,7 @@ public class HelloApplication extends Application {
         return p;
     }
 
-    public static TabPane InitialTab() {
+    public static TabPane initialTab() {
         TabPane tabPane = new TabPane();
 
         tabPane.setPrefWidth(400);

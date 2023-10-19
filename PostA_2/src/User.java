@@ -3,6 +3,7 @@
  * It encapsulates user information such as username, password, first name, and last name.
  * The User class is responsible for modeling user data
  * */
+
 public class User {
     private String username;
 
@@ -10,11 +11,14 @@ public class User {
     private String firstName;
     private String lastName;
 
+    private boolean isVip = false;
+
     public User(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        isVip = false;
     }
 
     public String getUsername() {
@@ -47,5 +51,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isVip() {
+        return isVip;
+    }
+    
+    //upgrade function
+    public void setVip(boolean vip) {
+        isVip = vip;
     }
 }

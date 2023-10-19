@@ -3,6 +3,11 @@
  * includes methods to interact with this collection
  * which is a part of Model 
  * */
+
+import javafx.scene.control.Alert;
+
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +23,7 @@ public class PostsCollection {
         return postMap;
     }
 
-    public static void AddPost(Post p) {
+    public static void addPost(Post p) {
         postMap.put(p.getID(), p);
     }
 
@@ -27,7 +32,10 @@ public class PostsCollection {
             postMap.remove(ID);
             System.out.println("The post has been deleted from the collection!");
         } else {
-            System.out.println("Sorry the post does not exist in the collection!");
+            Alert a = new Alert(Alert.AlertType.WARNING, "The post is not existed");
+            a.setTitle("Warning");
+            a.setHeaderText("ID error");
+            a.show();
         }
     }
 
@@ -40,40 +48,54 @@ public class PostsCollection {
         }
     }
 
-    public static void showTopNLikes(int num) {
+    public static List<Post> showTopNLikes() {
         List<Post> sortedPosts = new ArrayList<>(postMap.values());
         sortedPosts.sort((p1, p2) -> p2.getLikes() - p1.getLikes());
-
-        if (num > sortedPosts.size()) {
-            num = sortedPosts.size();
-            System.out.println("Only " + sortedPosts.size() + " posts exist in the collection. Showing all of them.");
-        }
-
-        System.out.println("The top-" + num + " posts with the most likes are:");
-        for (int i = 0; i < num; i++) {
-            System.out.print((i + 1) + ") ");
-            System.out.print(sortedPosts.get(i).getID() + " | ");
-            System.out.print(sortedPosts.get(i).getContent() + " | ");
-            System.out.println(sortedPosts.get(i).getLikes());
-        }
+        return sortedPosts;
     }
 
-    public static void showTopNShares(int num) {
+    public static ArrayList<Integer> getSharesMap() {
         //Sort by shares
-        List<Post> sortedPosts = new ArrayList<>(postMap.values());
-        sortedPosts.sort((p1, p2) -> p2.getShares() - p1.getShares());
-
-        if (num > sortedPosts.size()) {
-            num = sortedPosts.size();
-            System.out.println("Only " + sortedPosts.size() + " posts exist in the collection. Showing all of them.");
+        ArrayList<Integer> result = new ArrayList<Integer>(3);
+        result.add(0);
+        result.add(0);
+        result.add(0);
+        for (Post p : postMap.values()) {
+            if(p.getShares() >= 0 && p.getShares() <= 99) {
+                result.set(0, result.get(0) + 1);
+            } else if(p.getShares() >= 100 && p.getShares() <= 999) {
+                result.set(1, result.get(1) + 1);
+            } else {
+                result.set(2, result.get(2) + 1);
+            }
         }
+        return result;
+    }
 
-        System.out.println("The top-" + num + " posts with the most shares are:");
-        for (int i = 0; i < num; i++) {
-            System.out.print((i + 1) + ") ");
-            System.out.print(sortedPosts.get(i).getID() + " | ");
-            System.out.print(sortedPosts.get(i).getContent() + " | ");
-            System.out.println(sortedPosts.get(i).getShares());
+    public static void saveAllPostToFiles() {
+        File file = new File("posts.csv");
+        BufferedWriter out = null;
+        try {
+
+            SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/YYYY HH:MM");
+
+            out = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(file, false)));
+            out.write("ID,content,author,likes,shares,date-time\n");
+            for(Post p : postMap.values()) {
+                String content = p.getID() + "," + p.getContent() + "," + p.getAuthor()
+                        + "," + p.getLikes() + "," + p.getShares() + "," + dateFormat.format(p.getDate()) + "\n";
+                out.write(content);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

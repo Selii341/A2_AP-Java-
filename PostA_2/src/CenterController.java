@@ -40,12 +40,12 @@ public class CenterController {
         this.exportFileField = exportFileField;
     }
     public void addButtonHandler(ActionEvent event) {
-        AddPost();
+        addPost();
     }
     public void searchButtonHandler(ActionEvent event) {
         HelloApplication.tableView.getItems().clear();
         if (searchField.getText().equals("")) {
-            HelloApplication.tableView = CreateTable();
+            HelloApplication.tableView = createTable();
             HelloApplication.currentTab.setContent(HelloApplication.tableView);
             return;
         }
@@ -67,7 +67,7 @@ public class CenterController {
     }
 
     public void editButtonHandler(ActionEvent event) {
-        EditProfile();
+        editProfile();
     }
 
     public void removeButtonHandler(ActionEvent event) {
@@ -81,8 +81,8 @@ public class CenterController {
         try {
             int id = Integer.valueOf(deleteField.getText());
             PostsCollection.removePost(id);
-            PostsCollection.SaveAllPostToFiles();
-            HelloApplication.tableView = CreateTable();
+            PostsCollection.saveAllPostToFiles();
+            HelloApplication.tableView = createTable();
             HelloApplication.currentTab.setContent(HelloApplication.tableView);
 
             ArrayList<Integer> shareMap = PostsCollection.getSharesMap();
@@ -103,7 +103,7 @@ public class CenterController {
 
     public void likesButtonHandler(ActionEvent event) {
         if (numField.getText().equals("")) {
-            HelloApplication.tableView = CreateTable();
+            HelloApplication.tableView = createTable();
             HelloApplication.currentTab.setContent(HelloApplication.tableView);
             return;
         }
@@ -208,19 +208,19 @@ public class CenterController {
     }
 
     public void logoutButtonHandler(ActionEvent event) {
-        HelloApplication.SignStage.setScene(SignController.SignScene);
+        HelloApplication.SignStage.setScene(SignController.signScene);
     }
 
     public void saveVipToFile() {
         try {
-            accountNumber.Edit(HelloApplication.currentUser.getUsername(), HelloApplication.currentUser.getPassword(),
+            AccountNumber.edit(HelloApplication.currentUser.getUsername(), HelloApplication.currentUser.getPassword(),
                     HelloApplication.currentUser.getFirstName(), HelloApplication.currentUser.getLastName(), "true");
         } catch (IOException io) {
             System.out.println("File not exist");
         }
     }
 
-    public void AddPost() {
+    public void addPost() {
         Stage msgBox = new Stage();
         Group msgGroup = new Group();
         Scene scene1 = new Scene(msgGroup,300, 450);
@@ -276,8 +276,8 @@ public class CenterController {
                 System.out.println(dateFormat.format(new Date()));
                 Post p = new Post(Integer.valueOf(idField.getText()), contentField.getText(), authorField.getText(),
                         Integer.valueOf(likesField.getText()), Integer.valueOf(sharesField.getText()), new Date());
-                SavePostToFile(p);
-                HelloApplication.tableView = CreateTable();
+                savePostToFile(p);
+                HelloApplication.tableView = createTable();
                 HelloApplication.currentTab.setContent(HelloApplication.tableView);
 
                 ArrayList<Integer> shareMap = PostsCollection.getSharesMap();
@@ -323,7 +323,7 @@ public class CenterController {
         label.setFont(new Font(20));
     }
 
-    private void SavePostToFile(Post p) {
+    private void savePostToFile(Post p) {
         File file = new File("posts.csv");
         BufferedWriter out = null;
         try {
@@ -347,8 +347,8 @@ public class CenterController {
         }
     }
 
-    public static TableView CreateTable() {
-        PostsCollection.initPosts(LoadFiles());
+    public static TableView createTable() {
+        PostsCollection.initPosts(loadFiles());
         TableView tableView = new TableView();
 
         //Create 5 columns and connect with each property in Student class
@@ -405,7 +405,7 @@ public class CenterController {
         return tableView;
     }
 
-    private static HashMap<Integer, Post> LoadFiles() {
+    private static HashMap<Integer, Post> loadFiles() {
         HashMap<Integer, Post> result = new HashMap<Integer, Post>();
         try {
             FileReader fr = new FileReader("posts.csv");
@@ -449,7 +449,7 @@ public class CenterController {
         return result;
     }
 
-    private void EditProfile() {
+    private void editProfile() {
         Label RegisterTitle = new Label("   Edit");
         RegisterTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
         Label RegisterAccountLabel = new Label("Username:");
@@ -510,10 +510,10 @@ public class CenterController {
                 return;
             }
             try {
-                accountNumber.Edit(RegisterAccountTextField.getText(), RegisterPasswordTextField.getText(),
+                AccountNumber.edit(RegisterAccountTextField.getText(), RegisterPasswordTextField.getText(),
                         RegisterFirstNameTextField.getText(), RegisterLastNameTextField.getText(), String.valueOf(HelloApplication.currentUser.isVip()));
                 HelloApplication.SignStage.setScene(CenterScene);
-                HelloApplication.currentUser = accountNumber.getUser(RegisterAccountTextField.getText());
+                HelloApplication.currentUser = AccountNumber.getUser(RegisterAccountTextField.getText());
                 HelloApplication.SignStage.setTitle("Welcome " + HelloApplication.currentUser.getFirstName() + " " + HelloApplication.currentUser.getLastName());
             } catch (IOException ex) {
                 ex.printStackTrace();
