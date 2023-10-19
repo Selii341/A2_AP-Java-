@@ -21,7 +21,7 @@ public class SignController {
         this.signPasswordTextField = signPasswordTextField;
         this.signForgetLabel = signForgetLabel;
     }
-
+//Press ok to signin 
     public void okButtonHandler(ActionEvent event) {
         try {
             if (AccountNumber.testing(signAccountTextField.getText(), signPasswordTextField.getText()) == 1) {
@@ -37,7 +37,7 @@ public class SignController {
             ex.printStackTrace();
         }
     }
-
+//Another option to register
     public void registerHandler(ActionEvent event) {
         RegisterController.registerScene = HelloApplication.register();
         HelloApplication.SignStage.setScene(RegisterController.registerScene);

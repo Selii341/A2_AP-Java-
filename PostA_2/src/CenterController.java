@@ -39,6 +39,7 @@ public class CenterController {
         this.exportIDField = exportIDField;
         this.exportFileField = exportFileField;
     }
+ //Button handler that present on the dashboard
     public void addButtonHandler(ActionEvent event) {
         addPost();
     }
@@ -219,7 +220,8 @@ public class CenterController {
             System.out.println("File not exist");
         }
     }
-
+  //message box
+    //Add a new to selected class
     public void addPost() {
         Stage msgBox = new Stage();
         Group msgGroup = new Group();
@@ -308,7 +310,7 @@ public class CenterController {
         msgBox.setScene(scene1);
         msgBox.show();
     }
-
+  // Helper function
     private void initAddField(TextField field, int layoutX, int layoutY) {
         field.setPrefSize(150, 20);
         field.setAlignment(Pos.CENTER_LEFT);
@@ -346,7 +348,7 @@ public class CenterController {
             }
         }
     }
-
+// Create the table to present
     public static TableView createTable() {
         PostsCollection.initPosts(loadFiles());
         TableView tableView = new TableView();
@@ -404,8 +406,8 @@ public class CenterController {
 
         return tableView;
     }
-
-    private static HashMap<Integer, Post> loadFiles() {
+//Same as A1
+    public static HashMap<Integer, Post> loadFiles() {
         HashMap<Integer, Post> result = new HashMap<Integer, Post>();
         try {
             FileReader fr = new FileReader("posts.csv");
@@ -448,7 +450,7 @@ public class CenterController {
         }
         return result;
     }
-
+//Edit the user profile
     private void editProfile() {
         Label RegisterTitle = new Label("   Edit");
         RegisterTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
@@ -499,7 +501,7 @@ public class CenterController {
         RegisterReButton.setOnAction(e -> {
             HelloApplication.SignStage.setScene(CenterScene);
         });
-
+    //lamd data sent to the model
         RegisterOkButton.setOnAction(e -> {
             if (RegisterAccountTextField.getText().isEmpty() || RegisterPasswordTextField.getText().isEmpty() || RegisterFirstNameTextField.getText().isEmpty() ||
                     RegisterLastNameTextField.getText().isEmpty()) {

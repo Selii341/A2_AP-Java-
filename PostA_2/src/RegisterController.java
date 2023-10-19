@@ -26,7 +26,7 @@ public class RegisterController {
         this.registerSuccessLabel = registerSuccessLabel;
         this.registerRepeatLabel = registerRepeatLabel;
     }
-
+//Press ok to register and verify the state
     public void okButtonHandler(ActionEvent event) {
         if (registerAccountTextField.getText().isEmpty() || registerPasswordTextField.getText().isEmpty() || registerFirstNameTextField.getText().isEmpty() ||
                 registerLastNameTextField.getText().isEmpty()) {
@@ -46,13 +46,14 @@ public class RegisterController {
                 a.setHeaderText("Register succeeded");
                 a.show();
             } else {
+            	//already exist
                 registerRepeatLabel.setVisible(true);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-
+//Back to the previous page
     public void backButtonHandler(ActionEvent event) {
         HelloApplication.SignStage.setScene(SignController.signScene);
     }
