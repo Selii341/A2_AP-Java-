@@ -42,7 +42,7 @@ public class SignController {
                 // Navigate to the user's dashboard
                 CenterController.CenterScene = HelloApplication.center();
                 HelloApplication.SignStage.setScene(CenterController.CenterScene);
-                HelloApplication.SignStage.setTitle("Welcome " + HelloApplication.currentUser.getFirstName() + " " + HelloApplication.currentUser.getLastName());
+                HelloApplication.SignStage.setTitle("Welcome to Data Analytics Hub, " + HelloApplication.currentUser.getFirstName() + " " + HelloApplication.currentUser.getLastName());
             } else {
             	// Display an error message for failed sign-in
                 signForgetLabel.setVisible(true);

@@ -33,17 +33,18 @@ public class CenterController {
     private TextField numField;
     private TextField exportIDField;
     private TextField exportFileField;
-
+    private TextField importFileField;
     //same to the HelloApplication.currentUser
     public static Scene CenterScene;
 
     // Constructor code
-    public CenterController(TextField text, TextField deleteField, TextField numField, TextField exportIDField, TextField exportFileField) {
+    public CenterController(TextField text, TextField deleteField, TextField numField, TextField exportIDField, TextField exportFileField,TextField importFileField) {
         searchField = text;
         this.deleteField = deleteField;
         this.numField = numField;
         this.exportIDField = exportIDField;
         this.exportFileField = exportFileField;
+        this.importFileField = importFileField;
     }
  //Button handler that present on the dashboard
     // Add a new post
@@ -192,6 +193,78 @@ public class CenterController {
             System.out.println("IO Exception");
         }
     }
+    
+    // Import post from a CSV file
+    public void importButtonHandler(ActionEvent event) {
+        if (importFileField.getText().equals("")) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "ID should not be empty");
+            a.setTitle("Warning");
+            a.setHeaderText("ID error");
+            a.show();
+            return;
+        }
+        String filename = importFileField.getText() + ".csv";
+        try {
+            FileReader fr = new FileReader(filename);
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            int i = 0;
+            //title
+
+            while(line != null)
+            {
+                if (i == 0) {
+                    i++;
+                    line = br.readLine();
+                    continue;
+                }
+                List<String> lineData = Arrays.asList(line.split(","));
+                //System.out.println(lineData);
+
+                //string convert to date
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                Date d = sdf.parse(lineData.get(5));
+                //Construct a new post and add to array list result
+                Post p = new Post(Integer.valueOf(lineData.get(0)), lineData.get(1), lineData.get(2),
+                        Integer.valueOf(lineData.get(3)), Integer.valueOf(lineData.get(4)), d);
+
+                PostsCollection.addPost(p);
+                //read next line
+                line = br.readLine();
+            }
+
+            PostsCollection.saveAllPostToFiles();
+            HelloApplication.tableView = createTable();
+            HelloApplication.currentTab.setContent(HelloApplication.tableView);
+
+            ArrayList<Integer> shareMap = PostsCollection.getSharesMap();
+            HelloApplication.pieChart.getData().clear();
+            PieChart.Data slice1 = new PieChart.Data("shares: 0-99", shareMap.get(0));
+            PieChart.Data slice2 = new PieChart.Data("shares: 100-999", shareMap.get(1));
+            PieChart.Data slice3 = new PieChart.Data("shares: 1000+", shareMap.get(2));
+            HelloApplication.pieChart.getData().add(slice1);
+            HelloApplication.pieChart.getData().add(slice2);
+            HelloApplication.pieChart.getData().add(slice3);
+
+        } catch (FileNotFoundException e) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "File is not existed");
+            a.setTitle("Error");
+            a.setHeaderText("No file error");
+            a.show();
+        } catch (NumberFormatException ex) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "ID should be integer");
+            a.setTitle("Warning");
+            a.setHeaderText("Type error");
+            a.show();
+        } catch (IOException e) {
+            System.out.println("IO Exception");
+        } catch (ParseException e) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "File content invalid");
+            a.setTitle("Error");
+            a.setHeaderText("Invalid content error");
+            a.show();
+        }
+    }
 
     //Switching to the view of VIP
     public void upgradeButtonHandler(ActionEvent event) {
@@ -220,6 +293,8 @@ public class CenterController {
  // Log out button handler
     public void logoutButtonHandler(ActionEvent event) {
         HelloApplication.SignStage.setScene(SignController.signScene);
+        HelloApplication.SignStage.setTitle("Data Analytics Hub");
+        
     }
  // Save VIP status to file
     public void saveVipToFile() {

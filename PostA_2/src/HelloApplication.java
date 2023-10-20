@@ -207,9 +207,17 @@ public class HelloApplication extends Application {
         field.setAlignment(Pos.CENTER_LEFT);
         exportFileField.setText("FileName");
         field.setEditable(true);
+        
+      //text of import file name
+        TextField importFileField = new TextField();
+        field.setPrefSize(120, 20);
+        field.setAlignment(Pos.CENTER_LEFT);
+        exportFileField.setText("FileName");
+        field.setEditable(true);
+
 
      // Create a CenterController instance for handling user actions
-        CenterController controller = new CenterController(field, deleteField, numField, exportIDField, exportFileField);
+        CenterController controller = new CenterController(field, deleteField, numField, exportIDField, exportFileField,importFileField);
 
         //Click Add button and add a post
         Button addButton = new Button("Add Post");
@@ -242,6 +250,11 @@ public class HelloApplication extends Application {
         //Click Upgrade Button to Upgrade Vip
         Button upgradeButton = new Button("Upgrade");
         upgradeButton.setOnAction(controller::upgradeButtonHandler);
+        
+      //Update the VIP component,Click import Button to import csv files
+        Button importButton = new Button("Import");
+        importButton.setOnAction(controller::importButtonHandler);
+
      // Update the VIP component, a PieChart
         pieChart = updateVIPComponent();
 
@@ -250,6 +263,7 @@ public class HelloApplication extends Application {
         HBox deleteBox = new HBox(deleteField, removeButton);
         HBox likesBox = new HBox(numField, likesButton);
         HBox exportBox = new HBox(exportIDField, exportFileField, exportButton);
+        HBox importBox = new HBox(importFileField, importButton);
         searchBox.setPadding(new Insets(5));
         searchBox.setSpacing(5);
         deleteBox.setPadding(new Insets(5));
@@ -258,18 +272,27 @@ public class HelloApplication extends Application {
         likesBox.setSpacing(5);
         exportBox.setPadding(new Insets(5));
         exportBox.setSpacing(5);
-        VBox vbox = new VBox(searchBox, deleteBox, likesBox, tabPane, exportBox, pieChart);
+        importBox.setPadding(new Insets(5));
+        importBox.setSpacing(5);
+        VBox vbox = new VBox(searchBox, deleteBox, likesBox, tabPane, exportBox,importBox, pieChart);
         Scene scene;
         
         //check if the current user is VIP
         if(HelloApplication.currentUser.isVip()) {
             pieChart.setVisible(true);
+            importButton.setVisible(true);
+            importFileField.setVisible(true);
             upgradeButton.setVisible(false);
             upgradeButton.setManaged(false);
             scene = new Scene(vbox, 1200, 800);
         } else {
             pieChart.setVisible(false);
             pieChart.setManaged(false);
+            importButton.setVisible(false);
+            //rearrange the layout
+            importButton.setManaged(false);
+            importFileField.setVisible(true);
+            importFileField.setManaged(false);
             upgradeButton.setVisible(true);
             scene = new Scene(vbox, 640, 400);
         }

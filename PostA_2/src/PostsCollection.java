@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PostsCollection {
-    private static HashMap<Integer, Post> postMap;
+    private static HashMap<Integer, Post> postMap = new HashMap<>();
 
     /**
      * Initializes the collection of posts with data loaded from files.
