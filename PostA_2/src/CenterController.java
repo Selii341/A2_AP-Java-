@@ -155,34 +155,60 @@ public class CenterController {
                 return;
             }
 
-            file.createNewFile();
-            BufferedWriter out = null;
+           
             Post p = PostsCollection.getPostMap().get(id);
-            if(!PostsCollection.getPostMap().containsKey(p)) {
-                Alert a = new Alert(Alert.AlertType.WARNING, "Post is not existed");
-                a.setTitle("Warning");
-                a.setHeaderText("ID error");
-                a.show();
-                return;
+            if (p != null) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:MM");
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+                		//false:overwrite,true:append
+                        new FileOutputStream(file, false)));
+                
+                //title
+                out.write("ID,content,author,likes,shares,date-time\n");
+                String content = p.getID() + "," + p.getContent() + "," + p.getAuthor()
+                        + "," + p.getLikes() + "," + p.getShares() + "," + dateFormat.format(p.getDate()) + "\n";
+                out.write(content);
+                
+                //clean the memory and close the file
+                out.flush();
+                out.close();
+                
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION, "Export succeeded");
+                successAlert.setTitle("Succeed");
+                successAlert.setHeaderText("Export succeeded");
+                successAlert.show();
+            } else {
+                Alert notExistAlert = new Alert(Alert.AlertType.WARNING, "Post is not existed");
+                notExistAlert.setTitle("Warning");
+                notExistAlert.setHeaderText("ID error");
+                notExistAlert.show();
             }
-
-            SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/YYYY HH:MM");
-            out = new BufferedWriter(new OutputStreamWriter(
-            		//false:overwrite,true:append
-                    new FileOutputStream(file, false)));
-            //title
-            out.write("ID,content,author,likes,shares,date-time\n");
-            String content = p.getID() + "," + p.getContent() + "," + p.getAuthor()
-                    + "," + p.getLikes() + "," + p.getShares() + "," + dateFormat.format(p.getDate()) + "\n";
-            out.write(content);
-            
-            //clean the memory and close the file
-            out.flush();
-            out.close();
-            Alert a = new Alert(Alert.AlertType.INFORMATION, "Export succeeded");
-            a.setTitle("Succeed");
-            a.setHeaderText("Export succeeded");
-            a.show();
+//            if(!PostsCollection.getPostMap().containsKey(p)) {
+//                Alert a = new Alert(Alert.AlertType.WARNING, "Post is not existed");
+//                a.setTitle("Warning");
+//                a.setHeaderText("ID error");
+//                a.show();
+//                return;
+//            }
+//            file.createNewFile();
+//            BufferedWriter out = null;
+//            SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/YYYY HH:MM");
+//            out = new BufferedWriter(new OutputStreamWriter(
+//            		//false:overwrite,true:append
+//                    new FileOutputStream(file, false)));
+//            //title
+//            out.write("ID,content,author,likes,shares,date-time\n");
+//            String content = p.getID() + "," + p.getContent() + "," + p.getAuthor()
+//                    + "," + p.getLikes() + "," + p.getShares() + "," + dateFormat.format(p.getDate()) + "\n";
+//            out.write(content);
+//            
+//            //clean the memory and close the file
+//            out.flush();
+//            out.close();
+//            Alert a = new Alert(Alert.AlertType.INFORMATION, "Export succeeded");
+//            a.setTitle("Succeed");
+//            a.setHeaderText("Export succeeded");
+//            a.show();
 
         } catch (NumberFormatException ex) {
             Alert a = new Alert(Alert.AlertType.WARNING, "ID should be integer");
@@ -224,27 +250,39 @@ public class CenterController {
                 //string convert to date
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 Date d = sdf.parse(lineData.get(5));
-                //Construct a new post and add to array list result
-                Post p = new Post(Integer.valueOf(lineData.get(0)), lineData.get(1), lineData.get(2),
-                        Integer.valueOf(lineData.get(3)), Integer.valueOf(lineData.get(4)), d);
+                int postId = Integer.valueOf(lineData.get(0));
 
-                PostsCollection.addPost(p);
+                // Check if the post with the same ID already exists
+                if (PostsCollection.getPostMap().containsKey(postId)) {
+                    Alert a = new Alert(Alert.AlertType.WARNING, "Post with ID " + postId + " already exists.");
+                    a.setTitle("Warning");
+                    a.setHeaderText("Duplicate post");
+                    a.show();
+                } else {
+                	 //Construct a new post and add to array list result
+                    Post p = new Post(postId, lineData.get(1), lineData.get(2),
+                            Integer.valueOf(lineData.get(3)), Integer.valueOf(lineData.get(4)), d);
+                    PostsCollection.addPost(p);
+                    PostsCollection.saveAllPostToFiles();
+                    HelloApplication.tableView = createTable();
+                    HelloApplication.currentTab.setContent(HelloApplication.tableView);
+
+                    ArrayList<Integer> shareMap = PostsCollection.getSharesMap();
+                    HelloApplication.pieChart.getData().clear();
+                    PieChart.Data slice1 = new PieChart.Data("shares: 0-99", shareMap.get(0));
+                    PieChart.Data slice2 = new PieChart.Data("shares: 100-999", shareMap.get(1));
+                    PieChart.Data slice3 = new PieChart.Data("shares: 1000+", shareMap.get(2));
+                    HelloApplication.pieChart.getData().add(slice1);
+                    HelloApplication.pieChart.getData().add(slice2);
+                    HelloApplication.pieChart.getData().add(slice3);
+                }
+               
+                
                 //read next line
                 line = br.readLine();
             }
 
-            PostsCollection.saveAllPostToFiles();
-            HelloApplication.tableView = createTable();
-            HelloApplication.currentTab.setContent(HelloApplication.tableView);
-
-            ArrayList<Integer> shareMap = PostsCollection.getSharesMap();
-            HelloApplication.pieChart.getData().clear();
-            PieChart.Data slice1 = new PieChart.Data("shares: 0-99", shareMap.get(0));
-            PieChart.Data slice2 = new PieChart.Data("shares: 100-999", shareMap.get(1));
-            PieChart.Data slice3 = new PieChart.Data("shares: 1000+", shareMap.get(2));
-            HelloApplication.pieChart.getData().add(slice1);
-            HelloApplication.pieChart.getData().add(slice2);
-            HelloApplication.pieChart.getData().add(slice3);
+           
 
         } catch (FileNotFoundException e) {
             Alert a = new Alert(Alert.AlertType.WARNING, "File is not existed");
