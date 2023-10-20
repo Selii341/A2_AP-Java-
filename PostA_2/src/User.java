@@ -1,8 +1,10 @@
-/* presents users and contains attributes related to user information
- * This class represents the Model in the MVC pattern. (attributes and methods are defined)
- * It encapsulates user information such as username, password, first name, and last name.
- * The User class is responsible for modeling user data
- * */
+
+/*
+ * The User class represents user data and is a core part of the Model in the MVC pattern.(attributes and methods are defined)
+ * It encapsulates information such as username, password, first name, last name, and VIP status.
+ * User data is used for user authentication, registration, and account management.
+ */
+
 
 public class User {
     private String username;
@@ -12,15 +14,18 @@ public class User {
     private String lastName;
 
     private boolean isVip = false;
-
+    
+ // Constructor to initialize a user with basic information
     public User(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+     // By default, a user is not a VIP
         isVip = false;
     }
 
+ // Getter and setter
     public String getUsername() {
         return username;
     }

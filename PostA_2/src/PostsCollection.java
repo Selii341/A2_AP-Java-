@@ -1,8 +1,11 @@
+
 /*
- * This manages a collection of posts by storing them in a HashMap and 
- * includes methods to interact with this collection
- * which is a part of Model 
- * */
+ * The PostsCollection class manages a collection of social media posts using a HashMap data structure.
+ * It includes methods to interact with the post collection, such as adding, removing, and retrieving posts.
+ * This class is an essential part of the Model in the MVC pattern, handling post data storage and retrieval.
+ * It also provides functionality to save all posts to a CSV file.
+ * It links to the Post class for post data storage and retrieval.
+ */
 
 import javafx.scene.control.Alert;
 
@@ -15,17 +18,38 @@ import java.util.List;
 public class PostsCollection {
     private static HashMap<Integer, Post> postMap;
 
+    /**
+     * Initializes the collection of posts with data loaded from files.
+     *
+     * @param loadFiles A HashMap containing posts loaded from files.
+     */
     public static void initPosts(HashMap<Integer,Post> loadFiles) {
         postMap = loadFiles;
     }
 
+    /**
+     * Returns the HashMap containing the posts in the collection.
+     *
+     * @return A HashMap of posts with unique IDs.
+     */
     public static HashMap<Integer, Post> getPostMap() {
         return postMap;
     }
 
+    /**
+     * Adds a new post to the collection.
+     *
+     * @param p The Post object to be added to the collection.
+     */
     public static void addPost(Post p) {
         postMap.put(p.getID(), p);
     }
+    
+    /**
+     * Removes a post from the collection by its unique ID.
+     *
+     * @param ID The unique ID of the post to be removed.
+     */
 
     public static void removePost(int ID) {
         if (postMap.containsKey(ID)) {
@@ -38,6 +62,12 @@ public class PostsCollection {
             a.show();
         }
     }
+    
+    /**
+     * Retrieves and prints the details of a post from the collection by its unique ID.
+     *
+     * @param ID The unique ID of the post to be retrieved and displayed.
+     */
 
     public static void getPost(int ID) {
         if (postMap.containsKey(ID)) {
@@ -47,13 +77,23 @@ public class PostsCollection {
             System.out.println("Sorry the post does not exist in the collection!");
         }
     }
-
+    
+    /**
+     * Retrieves a list of posts sorted by the number of likes in descending order.
+     *
+     * @return A list of posts sorted by the number of likes.
+     */
     public static List<Post> showTopNLikes() {
         List<Post> sortedPosts = new ArrayList<>(postMap.values());
         sortedPosts.sort((p1, p2) -> p2.getLikes() - p1.getLikes());
         return sortedPosts;
     }
 
+    /**
+     * Calculates the distribution of shares among posts and returns an ArrayList of counts for different share ranges.
+     *
+     * @return An ArrayList representing the distribution of shares.
+     */
     public static ArrayList<Integer> getSharesMap() {
         //Sort by shares
         ArrayList<Integer> result = new ArrayList<Integer>(3);
@@ -72,6 +112,8 @@ public class PostsCollection {
         return result;
     }
 
+   // Saves all posts in the collection to a CSV file.
+     
     public static void saveAllPostToFiles() {
         File file = new File("posts.csv");
         BufferedWriter out = null;

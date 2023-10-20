@@ -1,4 +1,10 @@
-/*For center scene*/
+/*
+ * The CenterController class is responsible for controlling the main content view of the application.
+ * It handles user interactions and actions related to social media posts and user interface elements.
+ * This class is a part of the Controller in the MVC pattern, facilitating communication
+ * between user actions and the underlying application logic.
+ * It interacts with other classes, such as PostsCollection and HelloApplication, for managing post data and user activities.
+ */
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -31,7 +37,7 @@ public class CenterController {
     //same to the HelloApplication.currentUser
     public static Scene CenterScene;
 
-
+    // Constructor code
     public CenterController(TextField text, TextField deleteField, TextField numField, TextField exportIDField, TextField exportFileField) {
         searchField = text;
         this.deleteField = deleteField;
@@ -40,9 +46,11 @@ public class CenterController {
         this.exportFileField = exportFileField;
     }
  //Button handler that present on the dashboard
+    // Add a new post
     public void addButtonHandler(ActionEvent event) {
         addPost();
     }
+    // Search for posts
     public void searchButtonHandler(ActionEvent event) {
         HelloApplication.tableView.getItems().clear();
         if (searchField.getText().equals("")) {
@@ -66,11 +74,11 @@ public class CenterController {
             a.show();
         }
     }
-
+    // Edit user profile
     public void editButtonHandler(ActionEvent event) {
         editProfile();
     }
-
+    // Remove a post
     public void removeButtonHandler(ActionEvent event) {
         if (deleteField.getText().equals("")) {
             Alert a = new Alert(Alert.AlertType.WARNING, "ID should not be empty");
@@ -101,7 +109,7 @@ public class CenterController {
             a.show();
         }
     }
-
+    // Show posts with top N likes
     public void likesButtonHandler(ActionEvent event) {
         if (numField.getText().equals("")) {
             HelloApplication.tableView = createTable();
@@ -125,7 +133,7 @@ public class CenterController {
             a.show();
         }
     }
-
+    // Export a post to a CSV file
     public void exportButtonHandler(ActionEvent event) {
         if (exportIDField.getText().equals("")) {
             Alert a = new Alert(Alert.AlertType.WARNING, "ID should not be empty");
@@ -185,33 +193,35 @@ public class CenterController {
         }
     }
 
-    //switching to the view of VIP
+    //Switching to the view of VIP
     public void upgradeButtonHandler(ActionEvent event) {
-    	//CONFIRMATION--
+    	//CONFIRMATION dialog
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to subscribe to the application for a monthly fee of $0?");
         a.setTitle("Confirmation");
         a.setHeaderText("Confirmation");
-        //define a type 
+        
+        // Define a type
         Optional<ButtonType> buttonType = a.showAndWait();
         
         //verify the type
         if (buttonType.get().getButtonData().equals(ButtonBar.ButtonData.OK_DONE)) {
-        	//INFORMATION
+        	//INFORMATION dialog
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Please log out and log in again to access VIP functionalities.");
             alert.setTitle("Notice");
             alert.setHeaderText("Information");
             alert.show();
-
+            
+         // Save VIP status to file
             saveVipToFile();
         } else {
             a.close();
         }
     }
-
+ // Log out button handler
     public void logoutButtonHandler(ActionEvent event) {
         HelloApplication.SignStage.setScene(SignController.signScene);
     }
-
+ // Save VIP status to file
     public void saveVipToFile() {
         try {
             AccountNumber.edit(HelloApplication.currentUser.getUsername(), HelloApplication.currentUser.getPassword(),
@@ -220,8 +230,7 @@ public class CenterController {
             System.out.println("File not exist");
         }
     }
-  //message box
-    //Add a new to selected class
+ // Message box -  Display a dialog to add a new post
     public void addPost() {
         Stage msgBox = new Stage();
         Group msgGroup = new Group();
@@ -310,7 +319,9 @@ public class CenterController {
         msgBox.setScene(scene1);
         msgBox.show();
     }
-  // Helper function
+// Helper function
+ // Initialize text field for the addPost dialog
+
     private void initAddField(TextField field, int layoutX, int layoutY) {
         field.setPrefSize(150, 20);
         field.setAlignment(Pos.CENTER_LEFT);
@@ -318,13 +329,14 @@ public class CenterController {
         field.setLayoutX(layoutX);
         field.setLayoutY(layoutY);
     }
-
+    // Initialize labels for the addPost dialog
     private void initAddLabel(Label label, int layoutX, int layoutY) {
         label.setLayoutX(layoutX);
         label.setLayoutY(layoutY);
         label.setFont(new Font(20));
     }
-
+ 
+    // Save the post to a CSV file
     private void savePostToFile(Post p) {
         File file = new File("posts.csv");
         BufferedWriter out = null;
@@ -348,7 +360,7 @@ public class CenterController {
             }
         }
     }
-// Create the table to present
+ // Create and configure a TableView
     public static TableView createTable() {
         PostsCollection.initPosts(loadFiles());
         TableView tableView = new TableView();
@@ -406,7 +418,7 @@ public class CenterController {
 
         return tableView;
     }
-//Same as A1
+ // Load posts from a CSV file(Same as A1)
     public static HashMap<Integer, Post> loadFiles() {
         HashMap<Integer, Post> result = new HashMap<Integer, Post>();
         try {
@@ -450,7 +462,7 @@ public class CenterController {
         }
         return result;
     }
-//Edit the user profile
+    // Display a dialog to edit the user's profile
     private void editProfile() {
         Label RegisterTitle = new Label("   Edit");
         RegisterTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));

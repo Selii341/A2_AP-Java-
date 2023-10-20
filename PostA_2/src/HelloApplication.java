@@ -1,10 +1,13 @@
-/* It represents the View in the MVC pattern (displays the data to the user (GUI)and sends user input to the Controller for processing ) 
- * The application allows users to log in or register new accounts 
- * and handles switching between different scenes (login, registration, and the main content view)
- * User information eg.sss is stored in a file using the accountNumber class.
+
+
+/*
+ * The HelloApplication class represents the main application and user interface.
+ * It follows the MVC pattern, serving as the View in the design.(displays the data to the user (GUI)and sends user input to the Controller for processing ) 
+ * The application allows users to log in, register new accounts, and manage social media posts.
+ * It uses the AccountNumber class for user management and interacts with various other classes
+ * such as User, Post, PostsCollection, RegisterController, and SignController to create a functional application.
+ *  * User information eg.sss is stored in a file using the accountNumber class.
  */
-
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -38,7 +41,7 @@ public class HelloApplication extends Application {
     public static User currentUser;
     @Override
     public void start(Stage stage) throws IOException {
-
+    	   // Initialize the sign-in stage
         SignStage = new Stage();
         SignController.signScene = sign();
 
@@ -49,23 +52,26 @@ public class HelloApplication extends Application {
 
     //Create a login panel
     Scene sign() {
+    	// Sign-in title
         Label SignTitle = new Label("    Login");
         SignTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
+        // Labels and fields for username and password
         Label SignAccountLabel = new Label("Username:");
         SignAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
         Label SignPasswordLabel = new Label("Password:");
         SignPasswordLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
+     // Label to display errors
         Label SignForgetLabel = new Label("Wrong username or password!");
         SignForgetLabel.setTextFill(Color.RED);
         SignForgetLabel.setFont(Font.font("T", FontPosture.ITALIC, 20));
         SignForgetLabel.setVisible(false);
-
+     // Text fields for username and password
         TextField SignAccountTextField = new TextField();
         TextField SignPasswordTextField = new TextField();
-
+     // Buttons for signing in and registering
         Button SignOkButton = new Button("OK");
         Button SignRegisterButton = new Button("Sign up");
-
+        // Layout for the sign-in panel
         GridPane SignPane = new GridPane();
         SignPane.setHgap(20);
         SignPane.setVgap(20);
@@ -85,7 +91,7 @@ public class HelloApplication extends Application {
         VBox vbox = new VBox(SignPane, hbox);
         Scene scene = new Scene(vbox, 600, 400);
      
-        
+        // Create a SignController instance for handling sign-in actions
         SignController controller = new SignController(SignAccountTextField, SignPasswordTextField, SignForgetLabel);
         SignOkButton.setOnAction(controller::okButtonHandler);
     
@@ -96,8 +102,10 @@ public class HelloApplication extends Application {
 
     //Create a register panel
     public static Scene register() {
+        // Register title
         Label RegisterTitle = new Label("   Register");
         RegisterTitle.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
+        // Labels and fields for username, password, first name, and last name
         Label RegisterAccountLabel = new Label("Username:");
         RegisterAccountLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
         Label RegisterPasswordLabel = new Label("Password:");
@@ -107,25 +115,28 @@ public class HelloApplication extends Application {
         Label RegisterLastNameLabel = new Label("LastName:");
         RegisterLastNameLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
 
-      //checks if the user already exists and displays appropriate messages
+     // Label to display errors ->checks if the user already exists and displays appropriate messages
         Label RegisterRepeatLabel = new Label("      Username existed!    ");
         RegisterRepeatLabel.setTextFill(Color.RED);
         RegisterRepeatLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 20));
         RegisterRepeatLabel.setVisible(false);
 
+     // Label to display registration success
         Label RegisterSuccessLabel = new Label("Succeed!");
         RegisterSuccessLabel.setTextFill(Color.RED);
         RegisterSuccessLabel.setFont(Font.font("T", FontWeight.LIGHT, FontPosture.ITALIC, 40));
         RegisterSuccessLabel.setVisible(false);
 
+     // Buttons for registering and going back
         Button RegisterOkButton = new Button("OK");
         Button RegisterReButton = new Button("Back");
-
+     // Text fields for username, password, first name, and last name
         TextField RegisterAccountTextField = new TextField();
         TextField RegisterPasswordTextField = new TextField();
         TextField RegisterFirstNameTextField = new TextField();
         TextField RegisterLastNameTextField = new TextField();
 
+     // Layout for the registration panel
         GridPane RegisterPane = new GridPane();
         RegisterPane.setHgap(20);
         RegisterPane.setVgap(20);
@@ -152,15 +163,17 @@ public class HelloApplication extends Application {
         VBox vbox = new VBox(RegisterPane, hbox);
         Scene scene = new Scene(vbox, 600, 400);
 
+     // Create a RegisterController instance for handling registration actions
         RegisterController controller = new RegisterController(RegisterAccountTextField, RegisterPasswordTextField, RegisterFirstNameTextField, RegisterLastNameTextField, RegisterSuccessLabel, RegisterRepeatLabel);
         RegisterReButton.setOnAction(controller::backButtonHandler);
         RegisterOkButton.setOnAction(controller::okButtonHandler);
         return scene;
     }
-
+ // Create the main content scene
     public static Scene center() {
-        //Create a table to display
+    	// Create a table to display posts
         tableView = CenterController.createTable();
+        // Create a tab pane for displaying posts
         TabPane tabPane = InitialTab();
 
         //text for typing the search string
@@ -195,7 +208,7 @@ public class HelloApplication extends Application {
         exportFileField.setText("FileName");
         field.setEditable(true);
 
-
+     // Create a CenterController instance for handling user actions
         CenterController controller = new CenterController(field, deleteField, numField, exportIDField, exportFileField);
 
         //Click Add button and add a post
@@ -229,7 +242,7 @@ public class HelloApplication extends Application {
         //Click Upgrade Button to Upgrade Vip
         Button upgradeButton = new Button("Upgrade");
         upgradeButton.setOnAction(controller::upgradeButtonHandler);
-
+     // Update the VIP component, a PieChart
         pieChart = updateVIPComponent();
 
         //VBox for all components
@@ -263,7 +276,7 @@ public class HelloApplication extends Application {
 
         return scene;
     }
-//Draw the pie chart within3 slice
+//Draw the pie chart within 3 slices
     public static PieChart updateVIPComponent() {
         PieChart p = new PieChart();
         ArrayList<Integer> shareMap = PostsCollection.getSharesMap();
@@ -276,7 +289,7 @@ public class HelloApplication extends Application {
 
         return p;
     }
-
+ // Create a tab pane for displaying posts
     public static TabPane InitialTab() {
         TabPane tabPane = new TabPane();
 
