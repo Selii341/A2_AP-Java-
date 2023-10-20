@@ -71,11 +71,12 @@ public class PostsCollectionTest {
           }
 
           try {
-        	  // Attempt to remove a non-existent post, it should not affect the size
+     
               PostsCollection.removePost(2);
               assertEquals(5, PostsCollection.getPostMap().size());
           } catch (Exception e) {
               e.printStackTrace();
+           	  // Attempt to remove a non-existent post, it should not affect the size
               fail("Removing a non-existent post should not throw an exception");
           }
       

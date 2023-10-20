@@ -158,7 +158,7 @@ public class CenterController {
             file.createNewFile();
             BufferedWriter out = null;
             Post p = PostsCollection.getPostMap().get(id);
-            if(p.equals(null)) {
+            if(!PostsCollection.getPostMap().containsKey(p)) {
                 Alert a = new Alert(Alert.AlertType.WARNING, "Post is not existed");
                 a.setTitle("Warning");
                 a.setHeaderText("ID error");
